@@ -24,16 +24,16 @@ from api_parser import get_altmetric_data, generate_csv, generate_body
 # https://www.altmetric.com/explorer/documentation/api once you're logged in.
 
 # Number of days worth of results to include in the body of the email that's sent
-EMAIL_TIMEFRAME_DAYS = 60
+EMAIL_TIMEFRAME_DAYS = 30
 # The email address as a string
-EMAIL_ADDRESS = 'ralphie_automated@colorado.edu'
+EMAIL_ADDRESS = 'jila.scicom@gmail.com'
 # Name you'd like the email to show up as being from, as a string
-EMAIL_FRIENDLY_NAME = 'CRS Altmetrics Tool'
+EMAIL_FRIENDLY_NAME = 'JILA Help'
 # Subject line for the report email
-EMAIL_REPORT_SUBJECT = 'Weekly Altmetrics Publications Report'
+EMAIL_REPORT_SUBJECT = 'Monthly Altmetrics Report for JILA'
 
 # Altmetrics Department ID
-ALTMETRICS_DEPT_ID = 'cuboulder:group:###'
+ALTMETRICS_DEPT_ID = 'cuboulder:group:67'
 
 # Number of days worth of results to include in the attached CSV spreadsheet
 TIMEFRAME_DAYS = 365
@@ -42,10 +42,10 @@ TIMEFRAME_DAYS = 365
 INCLUDE_ALL = True
 
 # list of emails to send the summary email to
-SEND_REPORTS_TO_EMAILS = ['ralphie_dev@colorado.edu', 'ralphie_staff@colorado.edu']
+SEND_REPORTS_TO_EMAILS = ['kenna.castleberry@colorado.edu', 'steven.burrows@jila.colorado.edu']
 # list of emails to send test emails to. Will only use this list if the 'DEV' environment
 # variable is set to any value.
-SEND_DEV_REPORTS_TO_EMAILS = ['ralphie_dev@colorado.edu']
+SEND_DEV_REPORTS_TO_EMAILS = []
 
 # Let's get the email addresses based on our environment
 EMAILS = gmail.get_emails(SEND_REPORTS_TO_EMAILS, SEND_DEV_REPORTS_TO_EMAILS)
@@ -54,7 +54,7 @@ EMAILS = gmail.get_emails(SEND_REPORTS_TO_EMAILS, SEND_DEV_REPORTS_TO_EMAILS)
 ALTMETRIC_URL = altmetric_url(ALTMETRICS_DEPT_ID)
 # Replace 'Institute of Behavioral Science(IBS)' with the friendly name of your institute or
 # department if you don't want to see it for every result.
-DEPARTMENT_EXCLUSIONS = ['Institute of Behavioral Science (IBS)', 'Research Professors', 'Other Faculty Titles', 'Regular Faculty', 'Rostered Tenure Track Faculty', 'Postdocs', 'Organisation']
+DEPARTMENT_EXCLUSIONS = ['JILA', 'Research Professors', 'Other Faculty Titles', 'Regular Faculty', 'Rostered Tenure Track Faculty', 'Postdocs', 'Organisation']
 
 # Get data from the API and put it into python datastructures for processing
 PUB_DATA, INCLUDE_MAP = get_altmetric_data(ALTMETRIC_URL, TIMEFRAME_DAYS, DEPARTMENT_EXCLUSIONS)
