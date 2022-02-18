@@ -81,7 +81,7 @@ def get_altmetric_data(url, timeframe_days=365, department_exclusions=['Research
             request = requests.get(request['links']['next']).json()
         if last_page:
             break        
-        if type(request['data'][-1]['attributes']['publication-date']) is None or (datetime.now() - datetime.strptime(request['data'][-1]['attributes']['publication-date'], '%Y-%m-%d')).days > timeframe_days:
+        if type(request['data'][-1]['attributes']['publication-date']) is None or (datetime.now() - datetime.strptime(request['data'][-1]['attributes']['publication-date'], '%Y-%m-%d')).days >= timeframe_days:
             last_page = True
     # Store this as a list of dicts to be easier to iterate over
     return pub_data, include_map
