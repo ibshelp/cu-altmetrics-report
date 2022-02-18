@@ -3,6 +3,7 @@
 
 import csv
 import time
+import os
 from datetime import datetime
 
 import gmail
@@ -45,10 +46,11 @@ INCLUDE_ALL = True
 SEND_REPORTS_TO_EMAILS = ['ralphie_dev@colorado.edu', 'ralphie_staff@colorado.edu']
 # list of emails to send test emails to. Will only use this list if the 'DEV' environment
 # variable is set to any value.
-SEND_DEV_REPORTS_TO_EMAILS = ['ralphie_dev@colorado.edu']
+SEND_DEV_REPORTS_TO_EMAILS = [os.getenv('EMAIL_ADDRESS')]
 
 # Let's get the email addresses based on our environment
 EMAILS = gmail.get_emails(SEND_REPORTS_TO_EMAILS, SEND_DEV_REPORTS_TO_EMAILS)
+print(f"Sending emails to {EMAILS}")
 
 # go get our altmetric URL for our department ID
 ALTMETRIC_URL = altmetric_url(ALTMETRICS_DEPT_ID)
