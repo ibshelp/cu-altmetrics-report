@@ -106,10 +106,10 @@ def generate_csv(pub_data, include_map, timeframe_days=365, email_timeframe_days
 
         # Check the publication date to determine whether to include in email and CSV, and set it for output.
         if isinstance(assign_attribute(d, 'publication-date'), str):
-            if (datetime.now() - datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d')) < timedelta(days=timeframe_days):
+            if (datetime.now() - datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d')) <= timedelta(days=timeframe_days):
                 include_me = True
                 publication_date = datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d').date()
-                if (datetime.now() - datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d')) < timedelta(days=email_timeframe_days):
+                if (datetime.now() - datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d')) <= timedelta(days=email_timeframe_days):
                     include_me_email = True
         else:
             publication_date = datetime.strptime('1970-01-01', '%Y-%m-%d').date()
@@ -254,14 +254,10 @@ def generate_csv(pub_data, include_map, timeframe_days=365, email_timeframe_days
 def generate_body(email_data, email_timeframe_days, email_sender, num_results=10):
     """Takes in the list of dictionaries from email_data and formats it into a list of publications within email_timeframe_days"""
     # Gets the earliest publication in the included list and the duration to include as strings for display
-    duration = str((datetime.now().date() - email_data[-1]['PubDate']).days)
     timeframe = str(email_timeframe_days)
 
-    # Sets the first lines of the body before we include publications
-    body = '<h2>Showing IBS Publications from the last ' + timeframe + ' days: </h2>' + \
-    '<h4>Oldest publication shown here is ' + duration + ' days old.</h4>'
-
     # Initialize some values for the loop
+    body = ""
     included_results = 0
     extra_results = 0
 
@@ -274,6 +270,7 @@ def generate_body(email_data, email_timeframe_days, email_sender, num_results=10
             'Published: ' + str(publication['PubDate']) + '<br>' + \
             'Title: <a href ="' + publication['Link'] + '">' + publication['Title'] + '</a><br>' + \
             '<hr style="width:50%;text-align:left;margin-left:0"><br>'
+            last_date = publication['PubDate']
             included_results += 1
         else:
             # Counting the results after num_results for display
@@ -283,6 +280,14 @@ def generate_body(email_data, email_timeframe_days, email_sender, num_results=10
         # If we had more publications within email_timeframe_days than num_results
         body = body + \
         '<h3>Plus ' + str(extra_results) + ' additional publications in the last ' + timeframe + ' days. </h3><br>'
+    
+    # Set the duration to the date of the last email included
+    duration = str((datetime.now().date() - last_date).days)
+    
+    # Sets the first lines of the body before we include publications
+    body = '<h2>Showing up to ' + str(num_results) + ' IBS Publications from the last ' + timeframe + ' days: </h2>' + \
+    '<h4>Oldest publication shown here is ' + duration + ' days old.</h4>' + body
+    
     # Add some final information at the end of the email
     body = body + \
     '<h3>See Attached CSV for the last 12 months of publications by departmental authors.</h3>' + \
