@@ -106,10 +106,10 @@ def generate_csv(pub_data, include_map, timeframe_days=365, email_timeframe_days
 
         # Check the publication date to determine whether to include in email and CSV, and set it for output.
         if isinstance(assign_attribute(d, 'publication-date'), str):
-            if (datetime.now() - datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d')) <= timedelta(days=timeframe_days):
+            if (datetime.now() - datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d')).days <= timeframe_days:
                 include_me = True
                 publication_date = datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d').date()
-                if (datetime.now() - datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d')) <= timedelta(days=email_timeframe_days):
+                if (datetime.now() - datetime.strptime(assign_attribute(d, 'publication-date'), '%Y-%m-%d')).days <= email_timeframe_days:
                     include_me_email = True
         else:
             publication_date = datetime.strptime('1970-01-01', '%Y-%m-%d').date()
