@@ -164,6 +164,7 @@ def generate_csv(pub_data, include_map, timeframe_days=365, email_timeframe_days
             for author in r['institutional-authors']:
                 if author['id'] in include_map.keys():
                     author_list.append(include_map[author['id']]['name'].title())
+            author_list.sort()
             authors = '; '.join(author_list)
         else:
             authors = ''
